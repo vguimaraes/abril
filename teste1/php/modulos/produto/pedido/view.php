@@ -31,9 +31,31 @@
 	<script type="text/javascript">
 	var manager = {
 		'erro':false,
+		'on_val':false,
 		'start':function(){
 			manager.selects();
-			manager.validar();
+			manager.enviar();
+		},
+		'enviar':function(){
+			$('#formulario').submit(function(e){
+				if(!manager.on_val){
+					e.preventDefault();
+					$('.abril-preencher').each(function(){
+						if($(this).val()===null){
+							manager.erro = true;
+							var msg = 'Por favor, informe o '+$(this).attr('label');
+							bootbox.alert(msg, function() {
+				  				manager.erro = false;
+							});
+							return false;
+						}
+					});
+					if(!manager.erro){
+						manager.on_val = true;
+						$('#formulario').submit();	
+					}
+				}
+			});
 		},
 		'selects':function(){
 			
@@ -52,30 +74,6 @@
   				 allowClear: true
 			});
 			$('#produto').select2('val','all');
-		},
-		'validar':function(){
-			$('#formulario').ready(function(){
-				$('#formulario').submit(function(e){
-					e.preventDefault();
-					$('.abril-preencher	').each(function(o){
-						if(!$(this).val()&&!manager.erro){
-							manager.erro = true;
-							var msg = 'Por favor, informe o '+$(this).attr('label');
-							bootbox.alert(msg, function() {
-			  					$(this).focus();
-			  					manager.erro = false;
-			  					return false;
-							});
-						}		
-					});
-					if(!manager.erro){alert('teste')
-						$('#formulario').submit();
-					}
-					
-				});
-				
-			});
-			
 		}
 	}
 	$(document).ready(function(){
@@ -107,12 +105,13 @@
 						<?php 
 						if(count($produtos)>0){
 							foreach ($produtos as $idx => $valor) {?>
-							<option value="<?php echo $valor['id']?>"><?php echo $valor['nome']?></option>	
+							<option value="<?php echo $valor['id']?>"><?php echo '('.$valor['estoque'].') '.$valor['nome'];?></option>	
 						<?php }
 						}
 						?>
 					</select>
 				</div>
+				<div class="abril-msg"><?php echo $status;?></div>
 				<input type="submit" class="form-control" value="Fazer Perdido">
 			</form>
 		</div>
@@ -125,6 +124,7 @@
 			<table class="table table-hover">
 			    <thead>
 			      <tr>
+			        <th>Data</th>
 			        <th>Produto</th>
 			        <th>Cliente</th>
 			        <th>E-mail</th>
@@ -136,10 +136,12 @@
 			    if(count($pedidos)>0){
 			    	foreach ($pedidos as $idx => $valor) {?>
 			      <tr>
+			        <td><?php echo date('d-m-Y H:i',strtotime($valor['registro']))?></td>
 			        <td><?php echo $valor['produto']?></td>
 			        <td><?php echo $valor['cliente']?></td>
 			        <td><?php echo $valor['email']?></td>
 			        <td><?php echo $valor['preco']?></td>
+
 			      </tr>
 			      <?php
 			  	}

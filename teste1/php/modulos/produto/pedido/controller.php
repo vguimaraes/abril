@@ -3,11 +3,11 @@ include_once(PATH_CORE."/class_produto.php");
 include_once(PATH_CORE."/class_cliente.php");
 $produto = new Produto();
 $cliente = new Cliente();
+$status = '';
 
-print_r($_POST);
 if(isset($_POST)&&!empty($_POST)){
-	echo 1;
-	$produto->novo_pedido(array('id_produto'=>1,'id_cliente'=>2));
+	$_POST['qtd']=1;
+	$status = $produto->novo_pedido($_POST)['msg'];
 }
 
 

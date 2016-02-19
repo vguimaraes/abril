@@ -9,22 +9,29 @@ class Produto{
 	
 	public function novo_pedido($dados){
 		$db = new DB();
-		
-		$res = $db->insert($dados,'pedido');
-		if(empty($res['cod'])){
+
+		$filtro = array('id'=>$dados['id_produto']);
+		$produto = $this->ler_produto($filtro);
+		$estoque = $produto['retorno'][0]['estoque'];
+		if($estoque>=$dados['qtd']){
+			$estoque = $estoque-$dados['qtd'];
+			unset($dados['qtd']);
+			$res = $db->insert($dados,'pedido');
 			if(empty($res['cod'])){
-				$filtro = array('id'=>$dados['id_produto']);
-				$produto = $this->ler_produto($filtro);
-				$estoque = ($produto['retorno'][0]['estoque']-1);
-
-				$db->update(
-						array('estoque'=>$estoque),
-						'produto',
-						array('id'=>$dados['id_produto'])
-					);
-
-				$this->status = true;
+				if(empty($res['cod'])){
+					$res = $db->update(
+							array('estoque'=>$estoque),
+							'produto',
+							array('id'=>$dados['id_produto'])
+						);
+					print_r($res);
+					$this->status['executado'] = true;
+					$this->status['msg'] = 'Pedido Efetuado!';
+				}
 			}
+		}else{
+			$this->status['executado'] = false;
+			$this->status['msg'] = 'Produto esgotado!';
 		}
 		return $this->status;
 	}
