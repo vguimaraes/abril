@@ -10,6 +10,9 @@
 	<script src="lib/bootbox/bootbox.js"></script>
 	<link href="lib/select2/css/select2.min.css" rel="stylesheet" />
 	<script src="lib/select2/js/select2.min.js"></script>
+	<link href="lib/footable/css/footable.core.css" rel="stylesheet" type="text/css" />
+	<link href="lib/footable/css/footable.metro.css" rel="stylesheet" type="text/css" />
+	<script src="lib/footable/js/footable.js" type="text/javascript"></script>
 
 	<style type="text/css">
 	.abril-bloco{
@@ -35,6 +38,8 @@
 		'start':function(){
 			manager.selects();
 			manager.enviar();
+
+			$('.table').footable();
 		},
 		'enviar':function(){
 			$('#formulario').submit(function(e){
@@ -125,10 +130,10 @@
 			    <thead>
 			      <tr>
 			        <th>Data</th>
-			        <th>Produto</th>
+			        <th data-hide="phone">Produto</th>
 			        <th>Cliente</th>
-			        <th>E-mail</th>
-			        <th>Preço</th>
+			        <th data-hide="phone">E-mail</th>
+			        <th data-hide="phone">Preço</th>
 			      </tr>
 			    </thead>
 			    <tbody>
