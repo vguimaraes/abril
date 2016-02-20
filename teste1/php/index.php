@@ -19,8 +19,12 @@ $_controller 	= PATH_MODULO."/$_modulo/$_modulo_sub/".DEFAULT_CONTROLLER;
 $_view 			= PATH_MODULO."/$_modulo/$_modulo_sub/".DEFAULT_VIEW;
 
 if(isset($_REQUEST['ajax'])){
-	include_once($_controller);
-	include_once($_view);
+	if(file_exists($_controller) && file_exists($_controller)){
+		include_once($_controller);
+		include_once($_view);	
+	}else{
+		echo 'Modulo não encontrado';
+	}
 	die;
 }
 ?>
@@ -56,7 +60,7 @@ if(isset($_REQUEST['ajax'])){
 				$.ajax({
 				  url: "./?"+$.param(param)
 				}).done(function(modulo) {
-				  $('#abril-modulo').html(modulo);
+				  $('.abril-modulo').html(modulo);console.log(modulo)
 				  $('title').html('Editora Abril - '+subv)
 				});
       		});  		
