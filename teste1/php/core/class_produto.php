@@ -24,7 +24,6 @@ class Produto{
 							'produto',
 							array('id'=>$dados['id_produto'])
 						);
-					print_r($res);
 					$this->status['executado'] = true;
 					$this->status['msg'] = 'Pedido Efetuado!';
 				}

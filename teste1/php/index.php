@@ -84,7 +84,7 @@ if(isset($_REQUEST['ajax'])){
 	    <div class="collapse navbar-collapse" id="abril-menu">
 	    	<ul class="nav navbar-nav navbar-right">
 		        <li><a class="abril-controle-menu" mod="produto"sub="pedido">Pedidos</a></li>
-		        <li><a class="abril-controle-menu"mod="cliete"sub="clientes">Clientes</a></li>
+		        <li><a class="abril-controle-menu"mod="cliente"sub="clientes">Clientes</a></li>
 		        <li><a class="abril-controle-menu"mod="produto"sub="produtos">Produtos</a></li>
 		      </ul>
 	    </div>

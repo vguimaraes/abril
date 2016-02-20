@@ -84,7 +84,7 @@
 
    <div class="abril-bloco">
 		<div class="abril-topo abril-titulo">
-			PRODUTOS
+			CLIENTES
 		</div>
 	</div>
 	<div class="abril-bloco abril-borda">
@@ -96,12 +96,12 @@
 		</div>
 		<div class="abril-conteudo">
 		<form id="formulario" method="post">
-			<input type="text"name="nome" placeholder="Nome" class="abril-preencher abril-replace form-control" label="Nome do Produto">
-			<input type="number"name="preco" placeholder="Valor" class="abril-preencher abril-replace form-control"label="Valor">
-			<input type="number"name="estoque" placeholder="Estoque" class="abril-preencher abril-replace form-control"label="Estoque">
+			<input type="text"name="nome" placeholder="Nome" class="abril-preencher abril-replace form-control" label="Nome do Cliente">
+			<input type="text"name="email" placeholder="E-mail" class="abril-preencher abril-replace form-control"label="E-mail">
+			<input type="number"name="telefone" placeholder="Telefone" class="abril-preencher abril-replace form-control"label="Telefone">
 			<input type="submit" class="form-control" value="Salvar">
-			<input type="hidden" name="mod" value="produto">
-			<input type="hidden" name="sub" value="produtos">
+			<input type="hidden" name="mod" value="cliente">
+			<input type="hidden" name="sub" value="clientes">
 			<input type="hidden" id="act" name="act" value="salvar">
 			<input type="hidden" class="abril-replace" name="id" value="">
 			</form>
@@ -117,20 +117,20 @@
 			      <tr>
 			        <th>Data</th>
 			        <th data-hide="phone">Nome</th>
-			        <th data-hide="phone">Preço</th>
-			        <th data-hide="phone">Estoque</th>
+			        <th data-hide="phone">E-mail</th>
+			        <th data-hide="phone">Telefone</th>
 			        <th data-hide="phone">Gerenciar</th>
 			      </tr>
 			    </thead>
 			    <tbody>
 			    <?php 
-			    if(count($produtos)>0){
-			    	foreach ($produtos as $idx => $valor) {?>
+			    if(count($clientes)>0){
+			    	foreach ($clientes as $idx => $valor) {?>
 			      <tr>
 			        <td><?php echo date('d-m-Y H:i',strtotime($valor['registro']))?></td>
 			        <td><?php echo $valor['nome']?></td>
-			        <td><?php echo 'R$ '.number_format($valor['preco'],2,',','.')?></td>
-			        <td><?php echo $valor['estoque']?></td>
+			        <td><?php echo $valor['email']?></td>
+			        <td><?php echo $valor['telefone']?></td>
 			        <td align="center">
 			        <button a="abrir" dados='<?php echo json_encode($valor)?>' type="button" class="btn btn-default abril-manager-btn" aria-label="Left Align">
 					  <span class="glyphicon glyphicon-search" aria-hidden="true"></span>

@@ -141,7 +141,7 @@
 			        <td><?php echo $valor['produto']?></td>
 			        <td><?php echo $valor['cliente']?></td>
 			        <td><?php echo $valor['email']?></td>
-			        <td><?php echo $valor['preco']?></td>
+			        <td><?php echo 'R$ '.number_format($valor['preco'],2,',','.')?></td>
 
 			      </tr>
 			      <?php
