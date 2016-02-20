@@ -16,9 +16,13 @@
 
 	<style type="text/css">
 	.abril-bloco{
-		border:solid 0.1em #000;
 		margin: 0.5em; 
 		border-radius: 0.5em;
+	}
+	.abril-borda{
+		border:solid 0.1em #000;
+	}
+	.abril-titulo{
 	}
 	.abril-bloco div, .abril-bloco input{
 		margin-top: 0.5em;
@@ -88,7 +92,36 @@
 	</script>
 </head>
 <body>
-	<div class="abril-bloco">
+   <nav class="navbar navbar-default">
+	  <div class="container-fluid">
+	  	<div class="navbar-header">
+	      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#abril-menu" aria-expanded="false">
+	        <span class="sr-only">Toggle navigation</span>
+	        <span class="icon-bar"></span>
+	        <span class="icon-bar"></span>
+	        <span class="icon-bar"></span>
+	      </button>
+	      <a class="navbar-brand" href="#">Editora Abril</a>
+	    </div>
+
+	    <div class="collapse navbar-collapse" id="abril-menu">
+	    	<ul class="nav navbar-nav navbar-right">
+		        <li><a href="#">Pedidos</a></li>
+		        <li><a href="#">Clientes</a></li>
+		        <li><a href="#">Produtos</a></li>
+		      </ul>
+	    </div>
+
+	  </div>
+   </nav>
+
+   <div class="abril-bloco">
+		<div class="abril-topo abril-titulo">
+			PEDIDOS
+		</div>
+	</div>
+
+	<div class="abril-bloco abril-borda">
 		<div class="abril-topo">
 			COMPRAR PRODUTO
 		</div>
@@ -121,7 +154,7 @@
 			</form>
 		</div>
 	</div>
-	<div class="abril-bloco">
+	<div class="abril-bloco abril-borda">
 		<div class="abril-topo">
 			PEDIDOS
 		</div>
