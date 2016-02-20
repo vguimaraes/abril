@@ -1,18 +1,4 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<title>Editora Abril - Teste</title>
-	<meta name="viewport" content="width=device-width, user-scalable=yes">
-	<script type="text/javascript" src="lib/jquery/jquery.js"></script>
-	<link rel="stylesheet" href="lib/bootstrap/css/bootstrap.min.css">
-	<link rel="stylesheet" href="lib/bootstrap/css/bootstrap-theme.min.css">
-	<script src="lib/bootstrap/js/bootstrap.min.js"></script>
-	<script src="lib/bootbox/bootbox.js"></script>
-	<link href="lib/select2/css/select2.min.css" rel="stylesheet" />
-	<script src="lib/select2/js/select2.min.js"></script>
-	<link href="lib/footable/css/footable.core.css" rel="stylesheet" type="text/css" />
-	<link href="lib/footable/css/footable.metro.css" rel="stylesheet" type="text/css" />
-	<script src="lib/footable/js/footable.js" type="text/javascript"></script>
+
 
 	<style type="text/css">
 	.abril-bloco{
@@ -90,30 +76,7 @@
 	});
 
 	</script>
-</head>
-<body>
-   <nav class="navbar navbar-default">
-	  <div class="container-fluid">
-	  	<div class="navbar-header">
-	      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#abril-menu" aria-expanded="false">
-	        <span class="sr-only">Toggle navigation</span>
-	        <span class="icon-bar"></span>
-	        <span class="icon-bar"></span>
-	        <span class="icon-bar"></span>
-	      </button>
-	      <a class="navbar-brand" href="#">Editora Abril</a>
-	    </div>
 
-	    <div class="collapse navbar-collapse" id="abril-menu">
-	    	<ul class="nav navbar-nav navbar-right">
-		        <li><a href="#">Pedidos</a></li>
-		        <li><a href="#">Clientes</a></li>
-		        <li><a href="#">Produtos</a></li>
-		      </ul>
-	    </div>
-
-	  </div>
-   </nav>
 
    <div class="abril-bloco">
 		<div class="abril-topo abril-titulo">
