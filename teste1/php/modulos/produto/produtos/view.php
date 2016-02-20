@@ -36,7 +36,7 @@
 				if(!manager.on_val){
 					e.preventDefault();
 					$('.abril-preencher').each(function(){
-						if($(this).val()===null){
+						if($(this).val()==''){
 							manager.erro = true;
 							var msg = 'Por favor, informe o '+$(this).attr('label');
 							bootbox.alert(msg, function() {
@@ -81,6 +81,18 @@
    <div class="abril-bloco">
 		<div class="abril-topo abril-titulo">
 			PRODUTOS
+		</div>
+	</div>
+	<div class="abril-bloco abril-borda">
+		<div class="abril-conteudo">
+		<form id="formulario" method="post">
+			<input type="text"name="nome" placeholder="Nome" class="abril-preencher form-control" label="Nome do Produto">
+			<input type="number"name="preco" placeholder="Valor" class="abril-preencher form-control"label="Valor">
+			<input type="number"name="estoque" placeholder="Estoque" class="abril-preencher form-control"label="Estoque">
+			<input type="submit" class="form-control" value="Adicionar">
+			<input type="hidden" name="mod" value="produto">
+			<input type="hidden" name="sub" value="produtos">
+			</form>
 		</div>
 	</div>
 	<div class="abril-bloco abril-borda">

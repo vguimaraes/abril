@@ -53,4 +53,11 @@ class Produto{
 		$res = $db->select($campos,'v_pedidos',$filtro);
 		return $res;
 	}
+
+	public function adicionar_produto($dados){
+		$db = new DB();
+		unset($dados['mod']);
+		unset($dados['sub']);
+		$res = $db->insert($dados,"produto");
+	}
 }
