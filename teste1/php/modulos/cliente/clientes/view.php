@@ -115,8 +115,8 @@
 			<table class="table table-hover">
 			    <thead>
 			      <tr>
-			        <th>Data</th>
-			        <th data-hide="phone">Nome</th>
+			        <th data-hide="phone">Data</th>
+			        <th>Nome</th>
 			        <th data-hide="phone">E-mail</th>
 			        <th data-hide="phone">Telefone</th>
 			        <th data-hide="phone">Gerenciar</th>

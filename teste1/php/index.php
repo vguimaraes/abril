@@ -43,6 +43,11 @@ if(isset($_REQUEST['ajax'])){
 	<link href="lib/footable/css/footable.core.css" rel="stylesheet" type="text/css" />
 	<link href="lib/footable/css/footable.metro.css" rel="stylesheet" type="text/css" />
 	<script src="lib/footable/js/footable.js" type="text/javascript"></script>
+	<style type="text/css">
+	  .nav li{
+	  	cursor:pointer;
+	  }
+	</style>
 	<script type="text/javascript">
       $(document).ready(function(){
 

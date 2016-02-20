@@ -14,7 +14,7 @@ class Cliente{
 		unset($dados['act']);
 		unset($dados['id']);
 		
-		$res = $db->insert($dados,'cliente');print_r($res);
+		$res = $db->insert($dados,'cliente');
 		if(empty($res['cod'])){
 			if(empty($res['cod'])){
 				$this->status = true;
