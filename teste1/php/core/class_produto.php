@@ -58,6 +58,27 @@ class Produto{
 		$db = new DB();
 		unset($dados['mod']);
 		unset($dados['sub']);
+		unset($dados['act']);
 		$res = $db->insert($dados,"produto");
+	}
+
+	public function remover_produto($id=null){
+		if(!is_null($id)){
+			$db = new DB();
+			$res = $db->delete('produto',array('id'=>$id));
+		}
+
+	}
+
+	public function atualizar_produto($dados){
+		$db = new DB();
+
+		$id = $dados['id'];
+		unset($dados['mod']);
+		unset($dados['sub']);
+		unset($dados['act']);
+		unset($dados['id']);
+
+		$res = $db->update($dados,'produto',array('id'=>$id));
 	}
 }

@@ -26,7 +26,7 @@
 		'erro':false,
 		'on_val':false,
 		'start':function(){
-			manager.selects();
+			manager.gerenciar();
 			manager.enviar();
 
 			$('.table').footable();
@@ -52,23 +52,27 @@
 				}
 			});
 		},
-		'selects':function(){
-			
-			var eventCliente = $("#cliente").select2({
-				 placeholder:'Informe o Cliente',
-				 theme:'classic',
-				 width: '100%',
-  				 allowClear: true
+		'gerenciar':function(){
+			$('.abril-add').click(function(){
+				$('.abril-replace').each(function(){
+					$(this).val('');
+				});
+				$('#act').val('salvar');
+				$('.abril-replace')[0].focus();
 			});
-			$('#cliente').select2('val','all');
-
-			var eventProduto = $("#produto").select2({
-				 placeholder:'Informe o Produto',
-				 theme:'classic',
-				 width: '100%',
-  				 allowClear: true
+			$('.abril-manager-btn').click(function(){
+				$('#act').val($(this).attr('a'));
+				var dados = JSON.parse($(this).attr('dados'));
+				$('.abril-replace').each(function(){
+					$(this).val(dados[$(this).attr('name')])
+				});
+				if($(this).attr('a')=='abrir'){
+					$('#act').val('atualizar');
+				}
+				if($(this).attr('a')=='remover'){
+					$('#formulario').submit();
+				}
 			});
-			$('#produto').select2('val','all');
 		}
 	}
 	$(document).ready(function(){
@@ -84,14 +88,22 @@
 		</div>
 	</div>
 	<div class="abril-bloco abril-borda">
+		<div class="abril-topo" style="text-align:left!important" >
+			  <button type="button" class="btn btn-default abril-add">
+			  	<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+			  	Novo
+			  </button>
+		</div>
 		<div class="abril-conteudo">
 		<form id="formulario" method="post">
-			<input type="text"name="nome" placeholder="Nome" class="abril-preencher form-control" label="Nome do Produto">
-			<input type="number"name="preco" placeholder="Valor" class="abril-preencher form-control"label="Valor">
-			<input type="number"name="estoque" placeholder="Estoque" class="abril-preencher form-control"label="Estoque">
-			<input type="submit" class="form-control" value="Adicionar">
+			<input type="text"name="nome" placeholder="Nome" class="abril-preencher abril-replace form-control" label="Nome do Produto">
+			<input type="number"name="preco" placeholder="Valor" class="abril-preencher abril-replace form-control"label="Valor">
+			<input type="number"name="estoque" placeholder="Estoque" class="abril-preencher abril-replace form-control"label="Estoque">
+			<input type="submit" class="form-control" value="Salvar">
 			<input type="hidden" name="mod" value="produto">
 			<input type="hidden" name="sub" value="produtos">
+			<input type="hidden" id="act" name="act" value="salvar">
+			<input type="hidden" class="abril-replace" name="id" value="">
 			</form>
 		</div>
 	</div>
@@ -106,6 +118,8 @@
 			        <th>Data</th>
 			        <th data-hide="phone">Nome</th>
 			        <th data-hide="phone">Preço</th>
+			        <th data-hide="phone">Estoque</th>
+			        <th data-hide="phone">Gerenciar</th>
 			      </tr>
 			    </thead>
 			    <tbody>
@@ -116,6 +130,16 @@
 			        <td><?php echo date('d-m-Y H:i',strtotime($valor['registro']))?></td>
 			        <td><?php echo $valor['nome']?></td>
 			        <td><?php echo $valor['preco']?></td>
+			        <td><?php echo $valor['estoque']?></td>
+			        <td align="center">
+			        <button a="abrir" dados='<?php echo json_encode($valor)?>' type="button" class="btn btn-default abril-manager-btn" aria-label="Left Align">
+					  <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+					</button> 
+					<button a="remover" dados='<?php echo json_encode($valor)?>'type="button" class="btn btn-default abril-manager-btn" aria-label="Left Align">
+					  <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+					</button>
+
+			        </td>
 
 			      </tr>
 			      <?php
