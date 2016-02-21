@@ -44,8 +44,22 @@ if(isset($_REQUEST['ajax'])){
 	<link href="lib/footable/css/footable.metro.css" rel="stylesheet" type="text/css" />
 	<script src="lib/footable/js/footable.js" type="text/javascript"></script>
 	<style type="text/css">
+	   nav{
+	   	background: #52b9e9 !important;
+	   }
 	  .nav li{
 	  	cursor:pointer;
+	  	color:#FFF;
+	  }
+	  .abril-topo{
+	  	background: #52b9e9;
+	  	border-top-right-radius: 5px;
+	  	border-top-left-radius: 5px;
+	  	border: solid 1px #52b9e9;
+	  	color:#FFF;
+	  }
+	  .abril-borda{
+	  	border: solid 1px #52b9e9!important;
 	  }
 	</style>
 	<script type="text/javascript">
