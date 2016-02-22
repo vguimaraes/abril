@@ -17,9 +17,9 @@ class DB {
 		switch($this->ambiente){
 			case 'producao':
 				$this->host='localhost';
-				$this->user='root';
-				$this->pass='admin';
-				$this->base='abril';
+				$this->user=DB_USER;
+				$this->pass=DB_PASSWORD;
+				$this->base=DB_NAME;
 			break;
 			default://Localhost
 				$this->host='localhost';

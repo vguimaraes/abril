@@ -179,7 +179,8 @@ function abril_save(){
             'nome'=>$_POST['post_title'],
             'email'=>$_POST['email'],
             'telefone'=>$_POST['telefone'],
-            'wp_id'=> $_POST['ID']
+            'wp_id'=> $_POST['ID'],
+            'status'=>($_POST['post_status'=='trash'])?0:1
         );
         $cliente = new Cliente();
         $lista = $cliente->ler_cliente(array('wp_id'=>$_POST['ID']));
@@ -196,7 +197,8 @@ function abril_save(){
             'nome'=>$_POST['post_title'],
             'preco'=>$_POST['preco'],
             'estoque'=>$_POST['estoque'],
-            'wp_id'=> $_POST['ID']
+            'wp_id'=> $_POST['ID'],
+            'status'=>($_POST['post_status'=='trash'])?0:1
         );
         $produto = new Produto();
         $lista = $produto->ler_produto(array('wp_id'=>$_POST['ID']));

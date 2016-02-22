@@ -39,6 +39,7 @@ class Produto{
 		$db = new DB();
 		$campos = array('*');
 		$filtro = (count($filtro)>0)?$filtro:null;
+		$filtro['ativo']=1;
 
 		$res = $db->select($campos,'produto',$filtro);
 		return $res;
