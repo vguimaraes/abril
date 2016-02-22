@@ -37,6 +37,7 @@ if ( !function_exists( 'add_action' ) ) {
 	exit;
 }
 
+//Criando POST TYPE
 function abril_add_produto(){
 	$labels = array(
     'name'               => _x( 'Produtos', 'post type general name' ),
@@ -66,6 +67,8 @@ function abril_add_produto(){
 }
 add_action('init','abril_add_produto');
 
+
+//Adcionando campos
 add_action('add_meta_boxes','abril_campos');
 function abril_campos(){
     add_meta_box(
@@ -76,17 +79,64 @@ function abril_campos(){
         'normal', 
         'default'
     );
+    add_meta_box(
+        'abril_fd_estoque', 
+        'Estoque', 
+        'abril_fd_estoque', 
+        'product', 
+        'normal', 
+        'default'
+    );
 }
 function abril_fd_preco(){
     global $post;
 
-    echo '<input type="hidden" name="preco" id="eventmeta_noncename" value="'.
-    wp_create_nonce( plugin_basename(__FILE__) ).'" />';
-
-    $campo = get_post_meta($post->ID, '_fb_preco', true);
-
-    echo '<input type="text" name="_location" value="' . $campo  . '" class="widefat" />';
+   // Noncename needed to verify where the data originated
+    echo '<input type="hidden" name="eventmeta_noncename" id="eventmeta_noncename" value="' . 
+    wp_create_nonce( plugin_basename(__FILE__) ) . '" />';
+    
+    // Get the location data if its already been entered
+    $location = get_post_meta($post->ID, '_location', true);
+    
+    // Echo out the field
+    echo '<input type="text" name="_location" value="' . $location  . '" class="widefat" />';
 }
+
+
+//Salvando dados
+function abril_save(){
+ // verify this came from the our screen and with proper authorization,
+    // because save_post can be triggered at other times
+ /*   if ( !wp_verify_nonce( $_POST['eventmeta_noncename'], plugin_basename(__FILE__) )) {
+    return $post->ID;
+    }*/
+
+    // Is the user allowed to edit the post or page?
+    if ( !current_user_can( 'edit_post', $post->ID ))
+        return $post->ID;
+
+    // OK, we're authenticated: we need to find and save the data
+    // We'll put it into an array to make it easier to loop though.
+    
+    $events_meta['_location'] = $_POST['_location'];
+    
+    // Add values of $events_meta as custom fields
+    
+    foreach ($events_meta as $key => $value) { // Cycle through the $events_meta array!
+        if( $post->post_type == 'revision' ) return; // Don't store custom data twice
+        $value = implode(',', (array)$value); // If $value is an array, make it a CSV (unlikely)
+        if(get_post_meta($post->ID, $key, FALSE)) { // If the custom field already has a value
+            update_post_meta($post->ID, $key, $value);
+        } else { // If the custom field doesn't have a value
+            add_post_meta($post->ID, $key, $value);
+        }
+        if(!$value) delete_post_meta($post->ID, $key); // Delete if blank
+    }
+
+    
+}
+
+add_action('save_post', 'abril_save', 1, 2);
 //register_taxonomy("Vendas", array("produtos"), array("hierarchical" => true, "label" => "Vendas", "singular_label" => "Venda", "rewrite" => true));
 
 
