@@ -37,6 +37,9 @@ if ( !function_exists( 'add_action' ) ) {
 	exit;
 }
 
+include('class_produto.php');
+
+
 //Criando POST TYPE
 function abril_add_produto(){
 	$labels = array(
@@ -72,96 +75,53 @@ add_action('init','abril_add_produto');
 add_action('add_meta_boxes','abril_campos');
 function abril_campos(){
     add_meta_box(
-        'abril_fd_preco', 
-        'Preço', 
-        'abril_fd_preco', 
-        'product', 
-        'normal', 
-        'default'
-    );
-    add_meta_box(
-        'abril_fd_estoque', 
-        'Estoque', 
-        'abril_fd_estoque', 
+        'abril_fd_produto', 
+        'Características', 
+        'abril_fd_produto', 
         'product', 
         'normal', 
         'default'
     );
 }
-function abril_fd_preco(){
+
+function abril_fd_produto(){
     global $post;
 
-   // Noncename needed to verify where the data originated
-    echo '<input type="hidden" name="eventmeta_noncename" id="eventmeta_noncename" value="' . 
+    $html = '<input type="hidden" name="eventmeta_noncename" id="eventmeta_noncename" value="' . 
     wp_create_nonce( plugin_basename(__FILE__) ) . '" />';
     
-    // Get the location data if its already been entered
-    $location = get_post_meta($post->ID, '_location', true);
-    
+    $produto = new Produto();
+    $res = $produto->ler_produto(array('wp_id'=>$post->ID));
+    $valor = $res['retorno'][0]['preco'];
+    $estoque = $res['retorno'][0]['estoque'];
     // Echo out the field
-    echo '<input type="text" name="_location" value="' . $location  . '" class="widefat" />';
-}
+    $html .= '<label>Preço</label>';
+    $html .= '<input type="number" name="preco" value="' . $valor  . '" class="widefat" />';
+    $html .= '<label>Estoque</label>';
+    $html .= '<input type="number" name="estoque" value="' . $estoque  . '" class="widefat" />';
 
+    echo $html;
+}
 
 //Salvando dados
 function abril_save(){
- // verify this came from the our screen and with proper authorization,
-    // because save_post can be triggered at other times
- /*   if ( !wp_verify_nonce( $_POST['eventmeta_noncename'], plugin_basename(__FILE__) )) {
-    return $post->ID;
-    }*/
 
-    // Is the user allowed to edit the post or page?
     if ( !current_user_can( 'edit_post', $post->ID ))
         return $post->ID;
 
-    // OK, we're authenticated: we need to find and save the data
-    // We'll put it into an array to make it easier to loop though.
-    
-    $events_meta['_location'] = $_POST['_location'];
-    
-    // Add values of $events_meta as custom fields
-    
-    foreach ($events_meta as $key => $value) { // Cycle through the $events_meta array!
-        if( $post->post_type == 'revision' ) return; // Don't store custom data twice
-        $value = implode(',', (array)$value); // If $value is an array, make it a CSV (unlikely)
-        if(get_post_meta($post->ID, $key, FALSE)) { // If the custom field already has a value
-            update_post_meta($post->ID, $key, $value);
-        } else { // If the custom field doesn't have a value
-            add_post_meta($post->ID, $key, $value);
-        }
-        if(!$value) delete_post_meta($post->ID, $key); // Delete if blank
+    $dados = array(
+        'nome'=>$_POST['post_title'],
+        'preco'=>$_POST['preco'],
+        'estoque'=>$_POST['estoque'],
+        'wp_id'=> $_POST['ID']
+    );
+    $produto = new Produto();
+    $lista = $produto->ler_produto(array('wp_id'=>$_POST['ID']));
+    if($lista['linhas']==0){
+        $res = $produto->adicionar_produto($dados);
+    }else{
+         $res = $produto->atualizar_produto($dados);
     }
-
-    
 }
 
 add_action('save_post', 'abril_save', 1, 2);
-//register_taxonomy("Vendas", array("produtos"), array("hierarchical" => true, "label" => "Vendas", "singular_label" => "Venda", "rewrite" => true));
-
-
-
-/*
-define( 'AKISMET_VERSION', '3.1.7' );
-define( 'AKISMET__MINIMUM_WP_VERSION', '3.2' );
-define( 'AKISMET__PLUGIN_URL', plugin_dir_url( __FILE__ ) );
-define( 'AKISMET__PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
-define( 'AKISMET_DELETE_LIMIT', 100000 );
-
-register_activation_hook( __FILE__, array( 'Akismet', 'plugin_activation' ) );
-register_deactivation_hook( __FILE__, array( 'Akismet', 'plugin_deactivation' ) );
-
-require_once( AKISMET__PLUGIN_DIR . 'class.akismet.php' );
-require_once( AKISMET__PLUGIN_DIR . 'class.akismet-widget.php' );
-
-add_action( 'init', array( 'Akismet', 'init' ) );
-
-if ( is_admin() ) {
-	require_once( AKISMET__PLUGIN_DIR . 'class.akismet-admin.php' );
-	add_action( 'init', array( 'Akismet_Admin', 'init' ) );
-}
-
-//add wrapper class around deprecated akismet functions that are referenced elsewhere
-require_once( AKISMET__PLUGIN_DIR . 'wrapper.php' );
-
-*/
