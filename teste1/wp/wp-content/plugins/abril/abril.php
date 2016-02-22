@@ -31,15 +31,80 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 Copyright 2005-2015 Automattic, Inc.
 */
 
-// Make sure we don't expose any info if called directly
 if ( !function_exists( 'add_action' ) ) {
-	echo 'Hi there!  I\'m just a plugin, not much I can do when called directly.';
+	echo 'A função add_ation não foi carregada...';
 	exit;
 }
 
 include('class_produto.php');
+include('class_cliente.php');
+
+function abril_add_cliente(){
+    $labels = array(
+    'name'               => _x( 'Clientes', 'post type general name' ),
+    'singular_name'      => _x( 'Cliente', 'post type singular name' ),
+    'add_new'            => _x( 'Adicionar Cliente', 'book' ),
+    'add_new_item'       => __( 'Adicionar novo Cliente' ),
+    'edit_item'          => __( 'Editar Cliente' ),
+    'new_item'           => __( 'Novo Cliente' ),
+    'all_items'          => __( 'Todos os Cliente' ),
+    'view_item'          => __( 'Ver Cliente' ),
+    'search_items'       => __( 'Pesquisar Clientes' ),
+    'not_found'          => __( 'Cliente não encontrado' ),
+    'not_found_in_trash' => __( 'Cliente não encontrado na lixeira' ), 
+    'parent_item_colon'  => '',
+    'menu_name'          => 'Clientes'
+  );
+  $args = array(
+    'labels'        => $labels,
+    'description'   => 'Lista de Clientes',
+    'public'        => true,
+    'menu_position' => 6,
+    'supports'      => array( 'title'),
+    'has_archive'   => true,
+    'register_meta_box_cb'=>'abril_campos_cliente'
+  );
+    register_post_type( 'custumer', $args ); 
+}
+add_action('init','abril_add_cliente');
+
+//Adcionando campos
+add_action('add_meta_boxes','abril_campos_cliente');
+function abril_campos_cliente(){
+    add_meta_box(
+        'abril_fd_cliente', 
+        'Dados', 
+        'abril_fd_cliente', 
+        'custumer', 
+        'normal', 
+        'default'
+    );
+}
 
 
+function abril_fd_cliente(){
+    global $post;
+
+    $html = '<input type="hidden" name="eventmeta_noncename" id="eventmeta_noncename" value="' . 
+    wp_create_nonce( plugin_basename(__FILE__) ) . '" />';
+    
+    $cliente = new Cliente();
+    $res = $cliente->ler_cliente(array('wp_id'=>$post->ID));
+    $dados = $res['retorno'][0];
+    
+    $html .= '<label>E-mail</label>';
+    $html .= '<input type="text" name="email" value="' . $dados['email']  . '" class="widefat" />';
+
+    $html .= '<label>Telefone</label>';
+    $html .= '<input type="text" name="telefone" value="' . $dados['telefone']  . '" class="widefat" />';
+
+    echo $html;
+}
+
+
+
+
+#############PRODUTO
 //Criando POST TYPE
 function abril_add_produto(){
 	$labels = array(
@@ -64,7 +129,7 @@ function abril_add_produto(){
     'menu_position' => 5,
     'supports'      => array( 'title'),
     'has_archive'   => true,
-    'register_meta_box_cb'=>'abril_campos'
+    'register_meta_box_cb'=>'abril_campos_produto'
   );
   	register_post_type( 'product', $args ); 
 }
@@ -72,8 +137,8 @@ add_action('init','abril_add_produto');
 
 
 //Adcionando campos
-add_action('add_meta_boxes','abril_campos');
-function abril_campos(){
+add_action('add_meta_boxes','abril_campos_produto');
+function abril_campos_produto(){
     add_meta_box(
         'abril_fd_produto', 
         'Características', 
@@ -109,18 +174,37 @@ function abril_save(){
     if ( !current_user_can( 'edit_post', $post->ID ))
         return $post->ID;
 
-    $dados = array(
-        'nome'=>$_POST['post_title'],
-        'preco'=>$_POST['preco'],
-        'estoque'=>$_POST['estoque'],
-        'wp_id'=> $_POST['ID']
-    );
-    $produto = new Produto();
-    $lista = $produto->ler_produto(array('wp_id'=>$_POST['ID']));
-    if($lista['linhas']==0){
-        $res = $produto->adicionar_produto($dados);
-    }else{
-         $res = $produto->atualizar_produto($dados);
+    if($_POST['post_type']=='custumer'){
+         $dados = array(
+            'nome'=>$_POST['post_title'],
+            'email'=>$_POST['email'],
+            'telefone'=>$_POST['telefone'],
+            'wp_id'=> $_POST['ID']
+        );
+        $cliente = new Cliente();
+        $lista = $cliente->ler_cliente(array('wp_id'=>$_POST['ID']));
+        if($lista['linhas']==0){
+            $res = $cliente->novo_cliente($dados);
+        }else{
+             $res = $cliente->atualizar_cliente($dados);
+             
+        }
+    }
+
+    if($_POST['post_type']=='product'){
+        $dados = array(
+            'nome'=>$_POST['post_title'],
+            'preco'=>$_POST['preco'],
+            'estoque'=>$_POST['estoque'],
+            'wp_id'=> $_POST['ID']
+        );
+        $produto = new Produto();
+        $lista = $produto->ler_produto(array('wp_id'=>$_POST['ID']));
+        if($lista['linhas']==0){
+            $res = $produto->adicionar_produto($dados);
+        }else{
+             $res = $produto->atualizar_produto($dados);
+        }
     }
 }
 

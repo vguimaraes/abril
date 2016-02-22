@@ -3,7 +3,7 @@ class Cliente{
 	private $status = false;
 
 	function __construct(){
-		include_once(PATH_CORE."/class_db.php");
+		include("class_db.php");
 	}	
 
 	
@@ -20,7 +20,7 @@ class Cliente{
 				$this->status = true;
 			}
 		}
-		return $this->status;
+		return $res;
 	}
 
 	public function ler_cliente($filtro = array()){
@@ -43,13 +43,13 @@ class Cliente{
 	public function atualizar_cliente($dados){
 		$db = new DB();
 
-		$id = $dados['id'];
+		$id = $dados['wp_id'];
 		unset($dados['mod']);
 		unset($dados['sub']);
 		unset($dados['act']);
 		unset($dados['id']);
 
-		$res = $db->update($dados,'cliente',array('id'=>$id));
+		$res = $db->update($dados,'cliente',array('wp_id'=>$id));
 	}
 
 	
